@@ -1,0 +1,89 @@
+# ============================================================
+# WINMORE — ROOT GITIGNORE
+# Covers winmore-backend/ and winmore_frontend_web/
+# ============================================================
+
+# ============================================================
+# BACKEND — winmore-backend/
+# ============================================================
+
+winmore-backend/target/
+winmore-backend/.mvn/wrapper/maven-wrapper.jar
+!winmore-backend/**/src/main/**/target/
+!winmore-backend/**/src/test/**/target/
+
+# Sensitive config — never commit
+winmore-backend/src/main/resources/application.properties
+
+# Bulk data — large files, always rebuildable
+winmore-backend/bulk/
+
+# STS
+winmore-backend/.apt_generated
+winmore-backend/.classpath
+winmore-backend/.factorypath
+winmore-backend/.project
+winmore-backend/.settings
+winmore-backend/.springBeans
+winmore-backend/.sts4-cache
+
+# NetBeans
+winmore-backend/nbproject/private/
+winmore-backend/nbbuild/
+winmore-backend/dist/
+winmore-backend/nbdist/
+winmore-backend/.nb-gradle/
+winmore-backend/build/
+!winmore-backend/**/src/main/**/build/
+!winmore-backend/**/src/test/**/build/
+
+# ============================================================
+# FRONTEND — winmore_frontend_web/
+# ============================================================
+
+winmore_frontend_web/.dart_tool/
+winmore_frontend_web/.flutter-plugins
+winmore_frontend_web/.flutter-plugins-dependencies
+winmore_frontend_web/.pub-cache/
+winmore_frontend_web/.pub/
+winmore_frontend_web/build/
+winmore_frontend_web/coverage/
+winmore_frontend_web/doc/api/
+
+# Android build artifacts (even in a web project, flutter generates these)
+winmore_frontend_web/android/app/debug
+winmore_frontend_web/android/app/profile
+winmore_frontend_web/android/app/release
+winmore_frontend_web/ios/Flutter/.last_build_id
+
+# Obfuscation and symbolication
+winmore_frontend_web/app.*.symbols
+winmore_frontend_web/app.*.map.json
+
+# ============================================================
+# SHARED — IDE AND GENERAL
+# ============================================================
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+HELP.md
+
+# VS Code
+.vscode/
+
+# General
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/

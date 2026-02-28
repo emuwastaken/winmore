@@ -1,0 +1,43 @@
+WinMore.cards — Master Todo List
+Bulk Data Pipeline
+
+1. Create a bulk/ folder structure in the project and add it to .gitignore
+2. Create a BulkStorageService that checks if bulk_cards.json exists and reads its creation timestamp
+3. Ping Scryfall's bulk data endpoint at startup to retrieve the updated_at timestamp of their latest card dump
+4. Compare local timestamp vs Scryfall timestamp — determine if download is needed
+5. If no local bulk exists, download the full Scryfall bulk JSON and save as bulk_cards.json
+6. If local bulk is outdated, download only the delta (cards updated since last fetch), merge into existing bulk_cards.json
+7. Write a startup orchestrator that runs this sequence automatically on every app launch
+
+WinMore Classification Pipeline
+8. Define a WinMoreFilter interface so each filter type is its own pluggable class
+9. Write filter: Finishers — cards that end games when ahead (e.g. "whenever you attack" mass pump)
+10. Write filter: Multipliers — cards that double/triple existing resources (doublers, extra combat, copy effects)
+11. Write filter: Anthems — static +X/+X effects that require board presence to matter
+12. Write filter: Conditionals — cards with "if you control the most" or "for each" language
+13. Run all filters over bulk_cards.json and write matches to winmore_cards.json
+14. Persist winmore_cards.json contents into the cards database table with is_win_more = true
+
+Synergy Detection Engine
+15. Build a master synergy tag list (ETB, tokens, +1/+1 counters, sacrifice, spellslinger, graveyard, tribal, landfall, lifegain, artifacts, enchantress, etc — target 100+)
+16. Write a SynergyTagger that runs keyword and regex matching over oracle text for each card in bulk
+17. Persist synergy tags into synergy_tags and card_synergies junction table
+
+Deck Analysis API
+18. Create a POST /api/analyze endpoint that accepts a raw list of 100 card names as JSON
+19. Resolve submitted card names against your local DB, return error for unrecognized cards
+20. Count synergy tag occurrences across the submitted deck and calculate synergy density score
+21. Extract win-more cards from the deck, note their synergy tags, calculate win-more count
+22. Compute the win-more ratio and apply Commander-aware thresholds to produce a verdict
+
+Recommendation Engine
+23. If ratio too high: select replacement suggestions from winmore_cards.json that match deck's dominant synergy but are not already in the deck
+24. If ratio too low: suggest win-more cards from filtered bulk that complement the deck's color identity and gameplan
+25. Package verdict + synergy breakdown + recommendations into a single structured JSON response
+
+Frontend Groundwork
+26. Set up Flutter Web project, confirm it can make HTTP calls to localhost:8080
+27. Build deck input screen — accepts raw decklist text, sends to /api/analyze
+28. Display synergy breakdown as a pie chart using fl_chart
+29. Display win-more cards as draggable Scryfall card images using the Scryfall image URI from your DB
+30. Display recommendations as two columns — suggested cuts on the left, suggested additions on the right
